@@ -34,7 +34,8 @@ public class Level extends Scene {
 
     private List<Hole> holes = new ArrayList<>();
     private List<Obstacle> obstacles = new ArrayList<>();
-    private Camera cam, camera, camera2;
+    private Camera cam, camera;
+    private ParallelCamera camera2;
     double ballX, ballY, ballZ;
     Translate ballTranslate;
 
@@ -56,7 +57,7 @@ public class Level extends Scene {
     private Group skybox_root;
     private SubScene skybox_subscene3d;
     private Camera skybox_camera;
-    private PerspectiveCamera skybox_camera2;
+    private Camera skybox_camera2;
 
     public Level(
             double stage_w,
@@ -84,7 +85,7 @@ public class Level extends Scene {
         camera_translate = new Translate( 0, 0, Main.CAMERA_Z );
 
 
-        ballTranslate = new Translate(ballX, ballY - 5000, ballZ);
+        ballTranslate = new Translate(ballX, ballY, ballZ);
 
         // Add skybox subscene
         skybox_root = new Group();
@@ -101,10 +102,14 @@ public class Level extends Scene {
 
         skybox_subscene3d.setCamera (skybox_camera);
 
-        skybox_camera2 = new PerspectiveCamera(true);
+        skybox_camera2 = new ParallelCamera();
         skybox_camera2.setFarClip(Main.CAMERA_FAR_CLIP);
+        skybox_camera2.setTranslateX(0);
+        skybox_camera2.setTranslateY(0);
+        skybox_camera2.setTranslateZ(0);
         skybox_camera2.getTransforms().setAll(
-                new Rotate(-90, Rotate.X_AXIS)
+                new Rotate(-90, Rotate.X_AXIS),
+                new Translate(- Main.WINDOW_WIDTH / 2, - Main.WINDOW_HEIGHT / 2, 1200)
         );
         skybox_root.getChildren().add(skybox_camera2);
 
@@ -139,11 +144,16 @@ public class Level extends Scene {
         );
         this.root.getChildren ( ).add ( camera );
 
-        camera2 = new PerspectiveCamera(true);
+        camera2 = new ParallelCamera();
+        camera2.setTranslateX(0);
+        camera2.setTranslateY(0);
+        camera2.setTranslateZ(0);
         camera2.setFarClip(Main.CAMERA_FAR_CLIP);
         camera2.getTransforms().setAll(
+                new Translate(0, -100, 0),
                 ballTranslate,
-                new Rotate(-90, Rotate.X_AXIS)
+                new Rotate(-90, Rotate.X_AXIS),
+                new Translate(- Main.WINDOW_WIDTH / 2, - Main.WINDOW_HEIGHT / 2)
         );
         this.root.getChildren().add(camera2);
 
@@ -204,7 +214,7 @@ public class Level extends Scene {
                         ballY = t.getY();
                         ballZ = t.getZ();
                         ballTranslate.setX(ballX);
-                        ballTranslate.setY(ballY - 5000);
+                        ballTranslate.setY(ballY);
                         ballTranslate.setZ(ballZ);
 
                         boolean isInFinalHole = this.final_hole.handleCollision ( this.ball );
@@ -228,14 +238,14 @@ public class Level extends Scene {
                             game_over_text.setFont(Font.font(50));
                             game_over_text.setTranslateX(Main.WINDOW_WIDTH / 2 - game_over_text.getBoundsInParent().getWidth() / 2);
                             game_over_text.setTranslateY(Main.WINDOW_HEIGHT / 2 - game_over_text.getBoundsInParent().getHeight() / 2);
-                            game_over_text.setStroke(Color.GREEN);
+                            //game_over_text.setStroke(Color.GREEN);
                             game_over_text.setFill(Color.WHITE);
                             this.root2d.getChildren().add(game_over_text);
                             FadeTransition ft = new FadeTransition();
                             ft.setNode(game_over_text);
                             ft.setFromValue(1);
                             ft.setToValue(0);
-                            ft.setDuration(Duration.seconds(2));
+                            ft.setDuration(Duration.seconds(5));
                             ft.setOnFinished(actionEvent -> {
                                 Platform.exit();
                             });
@@ -255,12 +265,15 @@ public class Level extends Scene {
 
         this.setOnMouseDragged(event -> this.handleMosueDrag(event));
         this.setOnMouseReleased(event -> this.handleMosueReleased(event));
+        this.setOnScroll(event -> this.handleScroll(event));
 
         show_ball_animation();
     }
 
-
-
+    private void handleScroll(ScrollEvent event) {
+        camera_translate.setZ(camera_translate.getZ() + event.getDeltaY() * Main.SCROLL_SENS);
+        System.out.println(camera_translate.getZ());
+    }
 
     double last_x = 0;
     double last_y = 0;

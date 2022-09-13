@@ -12,7 +12,7 @@ import javafx.scene.transform.Transform;
 
 public class Skybox extends Group {
 
-    private static final float SKYBOX_SCALE = 2000.0f;
+    private static final float SKYBOX_SCALE = 3000.0f;
     public Skybox() {
         //
         //             7---6
@@ -113,7 +113,7 @@ public class Skybox extends Group {
 
 
                 3 ,  3 ,  2,   2,   6,   6,//up
-                3 ,  3 ,  6,   6,   4,   4,
+                3 ,  3 ,  6,   6,   4,   7,
 
 
                 5 ,  9 ,  1,   1,   0,   0,//down

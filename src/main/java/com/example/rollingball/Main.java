@@ -23,7 +23,7 @@ public class Main extends Application {
 	public static final double PODIUM_DEPTH  = 1200;
 	
 	public static final double CAMERA_FAR_CLIP = 8000;
-	public static final double CAMERA_Z        = -4000;
+	public static final double CAMERA_Z        = -2800;
 	public static final double CAMERA_X_ANGLE  = -45;
 	
 	public static final double BALL_RADIUS = 50;
@@ -43,17 +43,12 @@ public class Main extends Application {
 	public static final int OBSTACLE_NUM = 1;
 
 	public static final double CAMERA_SENS = 15.0;
+
+	public static final double SCROLL_SENS = 1.0;
 	
 	private Group root;
 	private Scene scene;
-	private Ball  ball;
-	private Arena arena;
-	private Hole hole;
-	private Obstacle[] obstacles;
-	private Camera cam, camera, camera2;
-	double ballX, ballY, ballZ;
 
-	Translate ballTranslate;
 	@Override
 	public void start ( Stage stage ) throws IOException {
 		this.root = new Group ( );
@@ -66,6 +61,7 @@ public class Main extends Application {
 		stage.setResizable(false);
 
 		// LEVEL
+		// use
 		Material hole_material = new PhongMaterial(Color.BLACK);
 
 		PhongMaterial ball_material = new PhongMaterial(Color.rgb(200, 200, 200));
