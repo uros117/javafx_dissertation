@@ -141,9 +141,9 @@ According to the comparative study:
 ## Related Repositories
 
 This implementation is part of a larger comparative study. See also:
-- [Bevy Implementation](../bevy_dissertation)
-- [Unity Implementation](../unity_dissertation)
-- [Main Repository with Thesis](../3d-game-development-comparison)
+- [Bevy Implementation](https://github.com/uros117/bevy_dissertation)
+- [Unity Implementation](https://github.com/uros117/unity_dissertation)
+- [Main Repository with Thesis](https://github.com/uros117/3d-game-development-comparison)
 
 ## Academic Context
 
